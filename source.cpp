@@ -65,10 +65,10 @@ void Pendule::evolution(bool dO1cst, bool dO2cst, bool frottement, int algo){ //
         dy1 = L1*dO1*cos(O1 * PI / 180);
         dy2 = L1*dO1*cos(O1 * PI / 180) - L2*dO2*cos(O2 * PI / 180); 
 
-        Ec1 = (1/2) * M1 * (x1*x1 + y1*y1);
+        Ec1 = (0.5) * M1 * (dx1 * dx1 + dy1 * dy1);
         Ep1 = M1 * g * y1;
         E1 = Ec1 + Ep1;
-        Ec2 = (1/2) * M2 * (x2*x2 + y2*y2);
+        Ec2 = (0.5) * M2 * (dx2 * dx2 + dy2 * dy2);
         Ep2 = M2 * g * y2;
         E2 = Ec2 + Ep2;
 
@@ -126,6 +126,7 @@ void Pendule::evolution(bool dO1cst, bool dO2cst, bool frottement, int algo){ //
 
 void Pendule::affichage(bool showgraph){ //cette fonction execute le script gnuplot pour faire un graphe
     // A implémenter : espace des phase O1 en fonction de dO1, O2 en fonction de dO2
+    // Graphe de l'énergie
     if(showgraph == true){
         system("gnuplot plot.plt");
     }
