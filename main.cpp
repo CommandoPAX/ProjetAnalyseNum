@@ -14,5 +14,5 @@ int main() {
     DoublePendule.init("./init");
     DoublePendule.evolution(false, false, false, 1);
     DoublePendule.affichage(true);
-
+    return 0;
 }
