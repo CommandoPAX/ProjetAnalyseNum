@@ -54,22 +54,22 @@ double Pendule::f2(double f2t, double f2y, double f2dy, bool frott){ //On défin
 void Pendule::evolution(bool dO1cst, bool dO2cst, bool frottement, int algo){ //Implémentation de la méthode RK4, c'est la partie fun du projet, le reste sera plus tranquille
     ofstream fichier("Evol.dat", ios::out | ios::app);  // ouverture en écriture avec effacement du fichier ouvert
     //fichier << "t" << " " << "O1" << " " << "dO1" << " " << "O2" << " " << "dO2" << " " << "x1" << " " << "dx1" << " " << "x2" << " " << "dx2" << " " << "y1" << " " << "dy1" << " " << "y2" << " " << "dy2" <<endl;
-    for (int i = 0 ; i <=10000; i++){ // 10000 c'est pour pas qu'il tourne à l'infini
+    for (int i = 0 ; i <=100000; i++){ // 10000 c'est pour pas qu'il tourne à l'infini
         
         x1  = L1*sin(O1 * PI / 180);
-        x2  = L1*sin(O1) + L2 * sin(O2 * PI / 180);
+        x2  = L1*sin(O1 * PI / 180) + L2 * sin(O2 * PI / 180);
         y1 = -L1 * cos(O1 * PI / 180); //De manière random j'ai une erreur sur cette ligne, c'est un prank elle existe pas
-        y2 = -L1 * cos(O1) - L2 * cos(O2 * PI / 180);
+        y2 = -L1 * cos(O1 * PI /180) - L2 * cos(O2 * PI / 180);
         dx1 = L1 * dO1 * cos(O1 * PI / 180);
         dx2 = L1*dO1*cos(O1 * PI / 180) + L2*dO2*cos(O2 * PI / 180);
         dy1 = L1*dO1*cos(O1 * PI / 180);
         dy2 = L1*dO1*cos(O1 * PI / 180) - L2*dO2*cos(O2 * PI / 180); 
 
         Ec1 = (0.5) * M1 * (dx1 * dx1 + dy1 * dy1);
-        Ep1 = M1 * g * y1;
+        Ep1 = -M1 * g * y1;
         E1 = Ec1 + Ep1;
         Ec2 = (0.5) * M2 * (dx2 * dx2 + dy2 * dy2);
-        Ep2 = M2 * g * y2;
+        Ep2 = -M2 * g * y2;
         E2 = Ec2 + Ep2;
 
         if(fichier && i%1==0)
@@ -81,13 +81,13 @@ void Pendule::evolution(bool dO1cst, bool dO2cst, bool frottement, int algo){ //
             case 1 : // RK4
                 t = h * i; //Calcul des coefficients de résolution pour RK4
                 k11 = Pendule::f1(t, O1, dO1, frottement);
-                k21 = Pendule::f1(t + h/2, O1+(h/2)*dO1, dO1+(h/2)*k11, frottement);
-                k31 = Pendule::f1(t + h/2, O1+(h/2)*dO1+(h*h/4)*dO1, dO1+(h/2)*k21, frottement);
+                k21 = Pendule::f1(t + h * 0.5, O1+(h * 0.5)*dO1, dO1+(h * 0.5)*k11, frottement);
+                k31 = Pendule::f1(t + h/2, O1+(h * 0.5)*dO1+(h*h*0.25)*dO1, dO1+(h * 0.5)*k21, frottement);
                 k41 = Pendule::f1(t + h, O1+h*dO1, dO1+h*k31, frottement);
 
                 k12 = Pendule::f2(t, O2, dO2, frottement);
-                k22 = Pendule::f2(t + h/2, O2+(h/2)*dO2, dO2+(h/2)*k12, frottement);
-                k32 = Pendule::f2(t + h/2, O2+(h/2)*dO2+(h*h/4)*dO2, dO2+(h/2)*k22, frottement);
+                k22 = Pendule::f2(t + h/2, O2+(h * 0.5)*dO2, dO2+(h * 0.5)*k12, frottement);
+                k32 = Pendule::f2(t + h/2, O2+(h * 0.5)*dO2+(h*h * 0.25)*dO2, dO2+(h * 0.5)*k22, frottement);
                 k42 = Pendule::f2(t + h, O2+h*dO2, dO2+h*k32, frottement);
 
                 O1 = O1 + h*dO1 + (h*h/6)*(k11 + k21 + k31);
