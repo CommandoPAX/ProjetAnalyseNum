@@ -33,7 +33,7 @@ double Pendule::f1(double f1t, double f1y, double f1dy, bool frott){ //On défin
         return fO1;
     }
     else{
-        return 1;
+        return 0;
     }
 }
 
@@ -47,7 +47,7 @@ double Pendule::f2(double f2t, double f2y, double f2dy, bool frott){ //On défin
         return fO2;
     }
     else{
-        return 1;
+        return 0;
     }
 }
 
@@ -65,21 +65,28 @@ void Pendule::evolution(bool dO1cst, bool dO2cst, bool frottement, int algo){ //
         dy1 = L1*dO1*cos(O1 * PI / 180);
         dy2 = L1*dO1*cos(O1 * PI / 180) - L2*dO2*cos(O2 * PI / 180); 
 
-        if(fichier && i%100==0)
-        {
-            fichier << t << " " << O1 << " " << dO1 << " " << O2 << " " << dO2 << " " << x1 << " " << dx1 << " " << x2 << " " << dx2 << " " << y1 << " " << dy1 << " " << y2 << " " << dy2 <<endl;
-        }
+        Ec1 = (1/2) * M1 * (x1*x1 + y1*y1);
+        Ep1 = M1 * g * y1;
+        E1 = Ec1 + Ep1;
+        Ec2 = (1/2) * M2 * (x2*x2 + y2*y2);
+        Ep2 = M2 * g * y2;
+        E2 = Ec2 + Ep2;
 
+        if(fichier && i%1==0)
+        {
+            fichier << t << " " << M1 << " " << M2 << " " << O1 << " " << dO1 << " " << O2 << " " << dO2 << " " << x1 << " " << dx1 << " " << x2 << " " << dx2 << " " << y1 << " " << dy1 << " " << y2 << " " << dy2 << " " << Ec1 << " " << Ep1 << " " << E1 << " " << Ec2 << " " << Ep2 << " " << E2 <<endl;
+        }
+        // t = 1, M1 = 2, M2 = 3, 01 = 4, dO1 = 5, O2 = 6, dO2 = 7, x1 = 8, dx1 = 9, x2 = 10, dx2 = 11, y1 = 12, dy1 = 13, y2 = 14, dy2 = 15, Ec1 = 16, Ep1 = 17, E1 = 18, Ec2 = 19, Ep2 = 20, E2 = 21
         switch(algo){
             case 1 : // RK4
                 t = h * i; //Calcul des coefficients de résolution pour RK4
                 k11 = Pendule::f1(t, O1, dO1, frottement);
-                k21 = Pendule::f1(t + h/2, 01+(h/2)*dO1, dO1+(h/2)*k11, frottement);
+                k21 = Pendule::f1(t + h/2, O1+(h/2)*dO1, dO1+(h/2)*k11, frottement);
                 k31 = Pendule::f1(t + h/2, O1+(h/2)*dO1+(h*h/4)*dO1, dO1+(h/2)*k21, frottement);
                 k41 = Pendule::f1(t + h, O1+h*dO1, dO1+h*k31, frottement);
 
                 k12 = Pendule::f2(t, O2, dO2, frottement);
-                k22 = Pendule::f2(t + h/2, 02+(h/2)*dO2, dO2+(h/2)*k12, frottement);
+                k22 = Pendule::f2(t + h/2, O2+(h/2)*dO2, dO2+(h/2)*k12, frottement);
                 k32 = Pendule::f2(t + h/2, O2+(h/2)*dO2+(h*h/4)*dO2, dO2+(h/2)*k22, frottement);
                 k42 = Pendule::f2(t + h, O2+h*dO2, dO2+h*k32, frottement);
 
@@ -109,7 +116,6 @@ void Pendule::evolution(bool dO1cst, bool dO2cst, bool frottement, int algo){ //
                 death = true;
                 break;
         }
-        //Calcul des coordonnées à partir des relations trigonométriques
 
         if(death == true){
             break;
@@ -122,6 +128,5 @@ void Pendule::affichage(bool showgraph){ //cette fonction execute le script gnup
     // A implémenter : espace des phase O1 en fonction de dO1, O2 en fonction de dO2
     if(showgraph == true){
         system("gnuplot plot.plt");
-        cout << "Affichage";
     }
 }
