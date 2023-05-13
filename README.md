@@ -1,7 +1,7 @@
 # Simulation d'un double pendule par Théo Bruant L3-Magistère
 
-## Feature supporté : 
+## Features supportées : 
 - Absolument rien pour le moment
 
-## Feature W.I.P.
+## Features W.I.P. :
 - Tout le projet ????
