@@ -11,9 +11,10 @@ class Pendule{
         double k11, k21, k31, k41;
         double k12, k22, k32, k42;
         double h = 1; //Le pas de temps, en seconde normalement
-        double g = 9.87; //La gravité de vos actes ne sera pas ignoré
+        double g = 9.81; //La gravité de vos actes ne sera pas ignoré
+        double Ec1, Ep1, Ec2, Ep2, E1, E2;
+        
         bool dO1cst = false, dO2cst = false;
-
         bool showgraph = false; //Bool pour savoir si le programme doit plot un graphe après son execution
         bool frott = false; //Check si on utilise la version avec frottement
         bool frottement = false;
