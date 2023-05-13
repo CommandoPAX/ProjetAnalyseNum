@@ -98,15 +98,18 @@ void Pendule::evolution(bool dO1cst, bool dO2cst, bool frottement, int algo){ //
                 else{
                     dO2 = dO2;
                 }
-            
+                break;
 
             case 2 :
                 //Code goes here
+                break;
 
             default :
                 cerr << "Algorithme invalide" << endl;
                 death = true;
+                break;
         }
+        //Calcul des coordonnées à partir des relations trigonométriques
 
         if(death == true){
             break;
