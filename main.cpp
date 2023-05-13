@@ -10,4 +10,9 @@
 
 int main() {
 
+    Pendule DoublePendule;
+    DoublePendule.init("./init");
+    DoublePendule.evolution(false, false, false, 1);
+    DoublePendule.affichage(true);
+
 }
