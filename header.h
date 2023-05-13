@@ -10,7 +10,7 @@ class Pendule{
         double DeltaO2, fO2, fO21, fO22;
         double k11, k21, k31, k41;
         double k12, k22, k32, k42;
-        double h = 1; //Le pas de temps, en seconde normalement
+        double h = 0.001; //Le pas de temps, en seconde normalement
         double g = 9.81; //La gravité de vos actes ne sera pas ignoré
         double Ec1, Ep1, Ec2, Ep2, E1, E2;
         
