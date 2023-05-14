@@ -25,14 +25,18 @@ void Pendule::init(string path){ //Cette fonction permet de récupéré les para
 
 double Pendule::f1(double f1t, double f1y, double f1dy, bool frott){ //On définit la fonction f1 pour dd01
 // A implémenter : une autre fonction pour la version avec frottement
-    DeltaO1 = O2 - f1y ;
-    fO11 = f1dy*f1dy*M2*cos(DeltaO1 * PI /180)*sin(DeltaO1 * PI / 180) + dO2*dO2*M2*L2*sin(DeltaO1 * PI / 180) - (M1 + M2)*g*sin(f1y * PI / 180) + M2*cos(DeltaO1 * PI / 180)*g*sin(O2 * PI / 180) ;
-    fO12 = (M1 + M2)*L1 - M2*L1*cos(DeltaO1 * PI /180)*cos(DeltaO1 * PI / 180) ;
+    DeltaO1 = O2-f1y ;
+    fO11 =  f1dy*f1dy*M2*cos(DeltaO1*PI/180)*sin(DeltaO1*PI/180) + 
+            dO2*dO2*M2*L2*sin(DeltaO1*PI/180) - 
+            (M1+M2)*g*sin(f1y*PI/180) + 
+            M2*cos(DeltaO1*PI/180)*g*sin(O2*PI/180);
+    fO12 = (M1+M2)*L1 - M2*L1*cos(DeltaO1*PI/180)*cos(DeltaO1*PI/180) ;
     if(fO12 != 0){
-        fO1 = fO11 / fO12;
+        fO1 = fO11/fO12;
         return fO1;
     }
     else{
+        cout << "Error in f1() : impossible value" << endl;
         return 0;
     }
 }
@@ -40,30 +44,34 @@ double Pendule::f1(double f1t, double f1y, double f1dy, bool frott){ //On défin
 double Pendule::f2(double f2t, double f2y, double f2dy, bool frott){ //On définit la fonction f2 pour dd02
 // A implémenter : une autre fonction pour la version avec frottement
     DeltaO2 = f2y - O1;
-    fO21 = -f2dy*f2dy*M2*L1*cos(DeltaO2 * PI / 180)*sin(DeltaO2 * PI / 180) + (M1 + M2)*(g*sin(O1 * PI / 180)*cos(DeltaO2 * PI / 180) - L1*dO1*dO1*sin(DeltaO2 * PI / 180) - g*sin(f2y * PI / 180)) ;
+    fO21 = -f2dy*f2dy*M2*L1*cos(DeltaO2 * PI/180)*sin(DeltaO2 * PI / 180) + (M1 + M2)*(g*sin(O1 * PI / 180)*cos(DeltaO2 * PI / 180) - L1*dO1*dO1*sin(DeltaO2 * PI / 180) - g*sin(f2y * PI / 180)) ;
     fO22 = (M1 + M2)*L2 - M2*L1*cos(DeltaO2 * PI / 180)*cos(DeltaO2 * PI / 180) ;
     if(fO22 != 0){
-        fO2 = fO21 / fO22;
+        fO2 = fO21/fO22;
         return fO2;
     }
     else{
+        cout << "Error in f1() : impossible value" << endl;
         return 0;
     }
 }
 
-void Pendule::evolution(bool dO1cst, bool dO2cst, bool frottement, int algo){ //Implémentation de la méthode RK4, c'est la partie fun du projet, le reste sera plus tranquille
-    ofstream fichier("Evol.dat", ios::out | ios::app);  // ouverture en écriture avec effacement du fichier ouvert
+void Pendule::evolution(double iter, double dt, bool dO1cst, bool dO2cst, bool frottement, int algo){ //Implémentation de la méthode RK4, c'est la partie fun du projet, le reste sera plus tranquille
+//    ofstream fichier("Evol.dat", ios::out | ios::app);  // ouverture en écriture avec effacement du fichier ouvert
+    ofstream fichier("Evol.dat", ios::out);  // ouverture en écriture avec effacement du fichier ouvert
     //fichier << "t" << " " << "O1" << " " << "dO1" << " " << "O2" << " " << "dO2" << " " << "x1" << " " << "dx1" << " " << "x2" << " " << "dx2" << " " << "y1" << " " << "dy1" << " " << "y2" << " " << "dy2" <<endl;
-    for (int i = 0 ; i <=100000; i++){ // 10000 c'est pour pas qu'il tourne à l'infini
-        
-        x1  = L1*sin(O1 * PI / 180);
-        x2  = L1*sin(O1 * PI / 180) + L2 * sin(O2 * PI / 180);
-        y1 = -L1 * cos(O1 * PI / 180); //De manière random j'ai une erreur sur cette ligne, c'est un prank elle existe pas
-        y2 = -L1 * cos(O1 * PI /180) - L2 * cos(O2 * PI / 180);
+    h = dt;
+    // Running scenario with define iterations and dt
+    for (int i = 0 ; i <=iter; i++){
+        //cout << i << " " << h << endl;
+        x1  = L1*sin(O1 * PI/180);
+        x2  = L1*sin(O1 * PI/180) + L2 * sin(O2 * PI / 180);
+        y1 = -L1 * cos(O1 * PI/180); //De manière random j'ai une erreur sur cette ligne, c'est un prank elle existe pas
+        y2 = -L1 * cos(O1 * PI/180) - L2 * cos(O2 * PI/180);
         dx1 = L1 * dO1 * cos(O1 * PI / 180);
-        dx2 = L1*dO1*cos(O1 * PI / 180) + L2*dO2*cos(O2 * PI / 180);
-        dy1 = L1*dO1*cos(O1 * PI / 180);
-        dy2 = L1*dO1*cos(O1 * PI / 180) - L2*dO2*cos(O2 * PI / 180); 
+        dx2 = L1*dO1*cos(O1 * PI/180) + L2*dO2*cos(O2 * PI/180);
+        dy1 = L1*dO1*cos(O1 * PI/180);
+        dy2 = L1*dO1*cos(O1 * PI/180) - L2*dO2*cos(O2 * PI/180); 
 
         Ec1 = (0.5) * M1 * (dx1 * dx1 + dy1 * dy1);
         Ep1 = -M1 * g * y1;
