@@ -31,7 +31,7 @@ int main(int argc, char* argv[]) {
     // Init pendulum from init file
     DoublePendule.init("./init");
     // Run pendulum
-    DoublePendule.evolution(iter, dt, false, false, false, 1);
+    DoublePendule.evolution(iter, dt, 0, 0, 0, 1);
     // Show pendulum to the world
     DoublePendule.affichage(true);
     return 0;
