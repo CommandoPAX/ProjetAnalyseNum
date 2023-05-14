@@ -2,6 +2,10 @@
 
 #include <string>
 
+// Added default iteration parameters for command line
+#define DEFAULT_ITER    100
+#define DEFAULT_DT      0.1
+
 class Pendule{
     private :
         double M1, M2, L1, L2, x10, y10, x20, y20, O10, O20, dx10, dx20, dy10, dy20, dO10, dO20; //Valeurs initiales
@@ -10,8 +14,8 @@ class Pendule{
         double DeltaO2, fO2, fO21, fO22;
         double k11, k21, k31, k41;
         double k12, k22, k32, k42;
-        double h = 0.001; //Le pas de temps, en seconde normalement
-        double g = 9.81; //La gravité de vos actes ne sera pas ignoré
+        double h = DEFAULT_DT; //Le pas de temps, en seconde normalement
+        const double g = 9.81; //La gravité de vos actes ne sera pas ignoré
         double Ec1, Ep1, Ec2, Ep2, E1, E2;
         
         bool dO1cst = false, dO2cst = false;
@@ -27,6 +31,6 @@ class Pendule{
 
     public :
         void init(std::string path);
-        void evolution(bool, bool, bool, int);
+        void evolution(double, double, bool, bool, bool, int);
         void affichage(bool);
 };
