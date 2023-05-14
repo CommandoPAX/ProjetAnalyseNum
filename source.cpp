@@ -4,7 +4,6 @@
 #include <fstream>
 #include <cmath>
 
-#define PI 3.14159265
 #ifndef VAR
     #define VAR
     double DeltaO1, fO1, fO11, fO12;
@@ -31,17 +30,10 @@ void Pendule::init(string path){ //Cette fonction permet de récupéré les para
 double Pendule::f1(double f1t, double f1y, double f1dy, bool frott){ //On définit la fonction f1 pour dd01
 // A implémenter : une autre fonction pour la version avec frottement
     // DeltaO1 = O2-f1y;
-    DeltaO1 = fmod(O2-O1,360);
-    double a = pow(f1dy,2) * M2 * L1 * (cos(DeltaO1*PI/180)) * (sin(DeltaO1*PI/180));
-    double b = pow(dO2,2)*M2*L2*sin(DeltaO1*PI/180);
-    double c = (M1+M2)*g*sin(f1y*PI/180);
-    double d = M2*cos(DeltaO1*PI/180)*g*sin(O2*PI/180);
+    DeltaO1 = fmod(O2-f1y,360);
+    fO11 = - M2 * L1 * sin(- DeltaO1 * deg) * cos(- DeltaO1 * deg)*pow(f1dy, 2) - M1 * g * sin(f1y * deg) - M2*g*sin(-DeltaO1*deg)*cos(O2*deg) ;
+    fO12 = M1*L1 + M2*L1*pow(sin(-DeltaO1*deg), 2);
 
-    cout << "f1dy : " << f1dy << " DeltaO1 : " << DeltaO1 << endl;
-    cout << "dO2 : " << dO2 << endl;
-
-    fO11 =  a + b - c + d;
-    fO12 = (M1+M2)*L1 - M2*L1*pow(cos(DeltaO1*PI/180),2);
     if(fO12 != 0){
         fO1 = fO11/fO12;
         return fO1;
@@ -55,14 +47,10 @@ double Pendule::f1(double f1t, double f1y, double f1dy, bool frott){ //On défin
 double Pendule::f2(double f2t, double f2y, double f2dy, bool frott){ //On définit la fonction f2 pour dd02
 // A implémenter : une autre fonction pour la version avec frottement
     if(M2 != 0 && L2 != 0) {
-        // DeltaO2 = f2y-O1;
-        DeltaO2 = fmod(O2-O1, 360);
+        DeltaO2 = fmod(f2y-O1, 360);
+        fO21 = (M1 + M2)*L1*sin(-DeltaO2*deg)*pow(dO1, 2) + M2*L2*sin(-DeltaO2*deg)*cos(-DeltaO2*deg)*pow(f2dy, 2) + (M1 + M2)*g*sin(-DeltaO2*deg)*cos(O1*deg);
+        fO22 = M1 * L2 + M2*L2*pow(sin(-DeltaO2*deg), 2);
         
-        fO21    =   -pow(f2dy,2)*M1*L2*cos(DeltaO2 * PI/180)*sin(DeltaO2*PI/180) +
-                    (M1 + M2)*(g*sin(O1*PI/180) * cos(DeltaO2*PI/180) -
-                    L1*pow(dO1,2)*sin(DeltaO2*PI/180) -
-                    g*sin(f2y*PI/180)) ;
-        fO22    = (M1+M2)*L2 - M1*L2*pow(cos(DeltaO2*PI/180),2);
         if(fO22 != 0){
             fO2 = fO21/fO22;
             return fO2;
