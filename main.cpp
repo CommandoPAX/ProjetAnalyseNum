@@ -1,4 +1,8 @@
 #include "header.h"
+#include <iostream>
+
+
+using namespace std;
 
 // A implémenter : 
 // Energie cinétique
@@ -8,11 +12,27 @@
 // Frottement
 // RFK45
 
-int main() {
+int main(int argc, char* argv[]) {
+
+    double iter    = DEFAULT_ITER;
+    double dt      = DEFAULT_DT;
+
+    // Reading iteration parameters from command line to avoid recompiling
+    if (argc == 1) {
+        cout << "Usage : pendulum #iterations #time-step" << endl;
+    }
+    if (argc > 1) {
+        iter    = stod(argv[1]);    // First parameter : number of iterations
+        dt      = stod(argv[2]);    // Second parameter : timestep per iteration
+    }
+    cout << "### Running with iterations : " << iter << " time_step : " << dt << endl;
 
     Pendule DoublePendule;
+    // Init pendulum from init file
     DoublePendule.init("./init");
-    DoublePendule.evolution(false, false, false, 1);
+    // Run pendulum
+    DoublePendule.evolution(iter, dt, false, false, false, 1);
+    // Show pendulum to the world
     DoublePendule.affichage(true);
     return 0;
 }
