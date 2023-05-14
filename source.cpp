@@ -72,20 +72,20 @@ void Pendule::evolution(double iter, double dt, bool dO1cst, bool dO2cst, bool f
     // Running scenario with define iterations and dt
     for (int i = 0 ; i <=iter; i++){
         //cout << i << " " << h << endl;
-        x1  = L1*sin(O1*PI/180);
-        x2  = L1*sin(O1*PI/180) + L2 * sin(O2*PI/180);
-        y1 = -L1 * cos(O1*PI/180);
-        y2 = -L1 * cos(O1*PI/180) - L2 * cos(O2*PI/180);
-        dx1 = L1 * dO1 * cos(O1*PI/180);
-        dx2 = L1*dO1*cos(O1*PI/180) + L2*dO2*cos(O2*PI/180);
-        dy1 = L1*dO1*cos(O1*PI/180);
-        dy2 = L1*dO1*cos(O1*PI/180) - L2*dO2*cos(O2*PI/180);
+        x1  = L1*sin(O1 * PI/180);
+        x2  = x1 + L2 * sin(O2 * PI / 180);
+        y1  = -L1 * cos(O1 * PI/180); //De manière random j'ai une erreur sur cette ligne, c'est un prank elle existe pas
+        y2  = y1 - L2 * cos(O2 * PI/180);
+        dx1 = L1 * dO1 * cos(O1 * PI / 180);
+        dx2 = dx1 + L2*dO2*cos(O2 * PI/180);
+        dy1 = L1*dO1*sin(O1 * PI/180);
+        dy2 = dy1 + L2*dO2*sin(O2 * PI/180); 
 
         Ec1 = (0.5) * M1 * (dx1 * dx1 + dy1 * dy1);
-        Ep1 = -M1 * g * y1;
+        Ep1 = M1 * g * y1;
         E1 = Ec1 + Ep1;
         Ec2 = (0.5) * M2 * (dx2 * dx2 + dy2 * dy2);
-        Ep2 = -M2 * g * y2;
+        Ep2 = M2 * g * y2;
         E2 = Ec2 + Ep2;
 
         if(fichier && i%1==0)
@@ -99,12 +99,12 @@ void Pendule::evolution(double iter, double dt, bool dO1cst, bool dO2cst, bool f
                 k11 = Pendule::f1(t, O1, dO1, frottement);
                 k21 = Pendule::f1(t + h * 0.5, O1+(h * 0.5)*dO1, dO1+(h * 0.5)*k11, frottement);
                 k31 = Pendule::f1(t + h/2, O1+(h * 0.5)*dO1+(h*h*0.25)*k11, dO1+(h * 0.5)*k21, frottement);
-                k41 = Pendule::f1(t + h, O1+h*dO1 + (h*h*0.5)*k21, dO1+h*k31, frottement);
+                k41 = Pendule::f1(t + h, O1+h*dO1 + (h*h * 0.5)*k21, dO1+h*k31, frottement);
 
                 k12 = Pendule::f2(t, O2, dO2, frottement);
                 k22 = Pendule::f2(t + h/2, O2+(h * 0.5)*dO2, dO2+(h * 0.5)*k12, frottement);
                 k32 = Pendule::f2(t + h/2, O2+(h * 0.5)*dO2+(h*h * 0.25)*k12, dO2+(h * 0.5)*k22, frottement);
-                k42 = Pendule::f2(t + h, O2+h*dO2+ (h*h*0.5)*k22, dO2+h*k32, frottement);
+                k42 = Pendule::f2(t + h, O2 + h * dO2 * (h*h * 0.5)*k22, dO2+h*k32, frottement);
 
                 O1 = O1 + h*dO1 + (h*h/6)*(k11 + k21 + k31);
                 if(dO1cst == false){ //Vérifie si on impose que la vitesse est constante pour M1
