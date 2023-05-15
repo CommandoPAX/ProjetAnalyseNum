@@ -14,7 +14,9 @@ double fx1(double t, double theta1, double theta2, double theta11, double theta2
      
 
 double fv1(double t, double theta1, double theta2, double theta11, double theta22){
-return ((-g*(2.0*m1+m2)*sin(theta1)-m2*g*sin(theta1-2.0*theta2)-2.0*sin(theta1-theta2)*m2*(pow(theta22,2)*L2+pow(theta11,2)*L1*cos(theta1-theta2)))/(L1*(2.0*m1+m2-m2*cos(2.0*theta1-2.0*theta2))));}
+      double num = ((-g*(2.0*m1+m2)*sin(theta1)-m2*g*sin(theta1-2.0*theta2) - 2.0*sin(theta1-theta2)*m2*(pow(theta22,2)*L2 + pow(theta11,2)*L1*cos(theta1-theta2)))
+      return num /(L1*(2.0*m1+m2-m2*cos(2.0*theta1-2.0*theta2))));
+}
 
  
 
