@@ -1,4 +1,5 @@
-#include "header.h"
+#include "double_pendulum.h"
+//#include "test.h"
 #include <iostream>
 
 
@@ -27,11 +28,11 @@ int main(int argc, char* argv[]) {
     }
     cout << "### Running with iterations : " << iter << " time_step : " << dt << endl;
 
-    Pendule DoublePendule;
+    D_Pendulum DoublePendule;
     // Init pendulum from init file
     DoublePendule.init("./init");
     // Run pendulum
-    DoublePendule.evolution(iter, dt, 0, 0, 0, 1);
+    DoublePendule.evolution(iter, dt, false, 1, 1, 1);
     // Show pendulum to the world
     DoublePendule.affichage(true);
     return 0;
