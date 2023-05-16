@@ -16,6 +16,8 @@ using namespace std;
 #define PI              3.14159265
 #define ALGO_1          1
 #define ALGO_2          2
+#define DAT_FILENAME    "D_Pendulum.dat"
+#define PNG_FILENAME    "D_Pendulum.png"
 
 class D_Pendulum{
     private :
