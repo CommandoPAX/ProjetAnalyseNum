@@ -25,7 +25,7 @@ then
             # Generate double pendulum data
             ./d_pendulum $ITER $DT $INIT_FILE
             # Plotting data
-            gnuplot ./D_Pendulum.dat
+#            gnuplot ./D_Pendulum.dat
             # Saving generate results
             mv ./D_Pendulum.png ./D_Pendulum_$N.png
             mv ./D_Pendulum.dat ./D_Pendulum_$N.dat
