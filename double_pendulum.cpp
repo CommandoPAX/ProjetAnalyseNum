@@ -5,16 +5,27 @@ using namespace std;
  
 void D_Pendulum::init(string path){ //Cette fonction permet de récupéré les paramètres initiaux du pendules
  
-    ifstream fichier(path, ios::in);  // on ouvre le fichier en lecture
+    ifstream init_file(path, ios::in);  // on ouvre le fichier en lecture
  
-        if(fichier)  // si l'ouverture a réussi
-        {       
-             fichier >> M1 >> M2 >> L1 >> L2 >> Th1 >> Th2 >> dTh1 >> dTh2; //Thn envoie les valeurs dans chacune des variables initiales
-             // La plupart des valeurs initiales sont sûrement inutiles, je les laisse pour le moment au cas où je m'en sers
-             fichier.close();  // on ferme le fichier
+    if(init_file)  // si l'ouverture a réussi
+    {       
+        init_file >> M1 >> M2 >> L1 >> L2 >> Th1 >> Th2 >> dTh1 >> dTh2; //Thn envoie les valeurs dans chacune des variables initiales
+        cout << "L1 : "<<L1<<" / L2 : "<<L2<< "/ M1 : "<<M1<<" / M2 : "<<M2<< " / Th1 : "<<Th1<<" / Th2 : "<<Th2<< "/ dTh1 : "<<dTh1<<" / Th2 : "<<dTh2<<endl;
+        init_file.close();
+        // Avoiding the M1/L1 = 0 case, switch P1 and P2
+        if(M1==0 || L1==0){
+            M1      =   M2;
+            L1      =   L2;
+            M2      =   0;
+            L2      =   0;
+            Th1     =   Th2;
+            dTh1    =   dTh2;
+            Th2     =   0;
+            dTh2    =   0;
         }
-        else  // sinon
-            cerr << "Impossible d'ouvrir le fichier !" << endl;;
+    }
+    else  // sinon
+        cerr << "Impossible d'ouvrir le fichier !" << endl;;
 }
 
 double D_Pendulum::f_Th1(double Th1, double Th2, double dTh1, double dTh2) {
@@ -27,13 +38,12 @@ double D_Pendulum::f_dTh1(double Th1, double Th2, double dTh1, double dTh2){
     return (num/denom);
     }
     else {
-    cerr << "Warning in f_1() : denom null, skipping" << endl;
+    // cerr << "Warning in f_1() : denom null, skipping" << endl;
     return 0;
     }
 }
 
 double D_Pendulum::f_Th2(double Th1, double Th2, double dTh1, double dTh2){
-
       return dTh2;}
   
 double D_Pendulum::f_dTh2(double Th1, double Th2, double dTh1, double dTh2){
@@ -43,7 +53,7 @@ double D_Pendulum::f_dTh2(double Th1, double Th2, double dTh1, double dTh2){
             return (num/denom);
       }
       else {
-        cerr << "Warning in f_1() : denom null, skipping" << endl;
+     //   cerr << "Warning in f_2() : denom null, skipping" << endl;
             return 0;
       }
 }
@@ -66,8 +76,8 @@ void D_Pendulum::evolution(double iter, double dt_param, int isdTh1cst, int isdT
 //      if(output_file && output_filter%1==0)
 //      if(output_file)
 //        {
-            // gnuplot will use x1 (8), y1 (12), x2 (10), y2 (14)
-            // output_file << t <<" "<< M1 <<" "<< M2 <<" "<<Th1<<" "<<dTh1<<" "<<Th2<<" "<<dTh2<<" "<<x1<<" "<<dx1<<" "<<x2<<" "<<dx2<<" "<<y1<<" "<<dy1<<" "<<y2<<" "<<dy2<<" "<<Ec1<<" "<<Ep1 << " " << E1 << " " << Ec2 << " " << Ep2 << " " << E2 <<endl;
+//            gnuplot will use x1 (8), y1 (12), x2 (10), y2 (14)
+//            output_file << t <<" "<< M1 <<" "<< M2 <<" "<<Th1<<" "<<dTh1<<" "<<Th2<<" "<<dTh2<<" "<<x1<<" "<<dx1<<" "<<x2<<" "<<dx2<<" "<<y1<<" "<<dy1<<" "<<y2<<" "<<dy2<<" "<<Ec1<<" "<<Ep1 << " " << E1 << " " << Ec2 << " " << Ep2 << " " << E2 <<endl;
             //output_file << t << "\t" << x1 << "\t" << y1 << "\t" << x2 << "\t" << y2 << "\t" << Th1 << "\t" << Th2 << "\t" << dTh1 << "\t" << dTh2 << endl;
 //        }
     
@@ -103,7 +113,7 @@ void D_Pendulum::evolution(double iter, double dt_param, int isdTh1cst, int isdT
         y2 = y1-L2*cos(Th2);
 
         if(t!=0) {
-            cout << t << "\t" << x1 << "\t" << y1 << "\t" << x2 << "\t" << y2 << "\t" << Th1 << "\t" << Th2 << "\t" << dTh1 << "\t" << dTh2 << endl;
+            //cout << t << "\t" << x1 << "\t" << y1 << "\t" << x2 << "\t" << y2 << "\t" << Th1 << "\t" << Th2 << "\t" << dTh1 << "\t" << dTh2 << endl;
             output_file << t << "\t" << x1 << "\t" << y1 << "\t" << x2 << "\t" << y2 << "\t" << Th1 << "\t" << Th2 << "\t" << dTh1 << "\t" << dTh2 << endl;
         }
     }
