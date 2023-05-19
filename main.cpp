@@ -8,6 +8,8 @@ int main(int argc, char* argv[]) {
 
     double iter    = DEFAULT_ITER;
     double dt      = DEFAULT_DT;
+    double dTh1cst = 0;
+    double dTh2cst = 0;
     string init_file;
 
     // Reading iteration parameters from command line to avoid recompiling
@@ -25,6 +27,13 @@ int main(int argc, char* argv[]) {
         dt          = stod(argv[2]);    // Second parameter : timestep per iteration
         init_file   = argv[3];         // Last optional parameter is for init file selection
     }
+    if (argc == 6){
+        iter        = stod(argv[1]);    // First parameter : number of iterations
+        dt          = stod(argv[2]);    // Second parameter : timestep per iteration
+        init_file   = argv[5];         // Last optional parameter is for init file selection
+        dTh1cst = stod(argv[3]);    // Third parameter : if dTh1 is constant
+        dTh2cst = stod(argv[4]);    // Fourth parameter : if dTh2 is constant
+    }
     cout << "# Running with iterations : " << iter << " time_step : " << dt << endl;
 
     D_Pendulum DoublePendule;
@@ -33,7 +42,7 @@ int main(int argc, char* argv[]) {
     DoublePendule.init(init_file);
     
     // Run pendulum
-    DoublePendule.evolution(iter, dt, false, 1, 1, 1);
+    DoublePendule.evolution(iter, dt, dTh1cst, dTh2cst);
     
     // Show pendulum to the world
     DoublePendule.affichage();
