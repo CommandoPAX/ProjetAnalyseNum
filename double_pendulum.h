@@ -14,36 +14,34 @@ using namespace std;
 #define DEFAULT_ITER    100
 #define DEFAULT_DT      0.1
 #define PI              3.14159265
-#define ALGO_1          1
-#define ALGO_2          2
 #define DAT_FILENAME    "D_Pendulum.dat"
 #define PNG_FILENAME    "D_Pendulum.png"
 
 class D_Pendulum{
     private :
         double M1, M2, L1, L2;
-        double t=0, x1, x2, y1, y2;                 // Positions
-        double dx1, dx2, dy1, dy2;                  // Linear speed
-        double ddx1, ddx2, ddy1, ddy2;              // Linear acceleration
-        double Th1, Th2, dTh1, dTh2, ddTh1, ddTh2;  // Angular position, speed, acceleration
+        double x1, x2, y1, y2;        // Positions
+        double dx1, dx2, dy1, dy2;    // Linear speed
+        double Th1, Th2, dTh1, dTh2;  // Angular position, speed, acceleration
         const double DEG = PI/180;
-        double k1_1=0, k2_1=0, k3_1=0, k4_1=0;
-        double k1_2=0, k2_2=0, k3_2=0, k4_2=0;
         double h = DEFAULT_DT;
         const double g = 9.81;
         double Ec1, Ep1, Ec2, Ep2, E1, E2;
         double Ec, Ep, E;
-        bool death = false;
+
+        double t=0, dt;
+        double k1X1, k1X2, k1dX1, k1dX2;
+        double k2X1, k2X2, k2dX1, k2dX2;
+        double k3X1, k3X2, k3dX1, k3dX2;
+        double k4X1, k4X2, k4dX1, k4dX2;
 
         int algo;
 
-        double f_Th1(double, double, double, double);
-        double f_Th2(double, double, double, double);
         double f_dTh1(double, double, double, double);
         double f_dTh2(double, double, double, double);
 
     public :
         void init(std::string path);
-        void evolution(double, double, int, int, int, int);
+        void evolution(double, double, int, int);
         void affichage();
 };
