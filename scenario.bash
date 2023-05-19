@@ -8,21 +8,19 @@
 
 MULTI_INIT_FILE="./multi_init"
 INIT_FILE="./init_temp"
+GRAPHES_DIR="./GRAPHES"
+DATA_DIR="./DATA"
 N=0
 
 ITER=$1
 DT=$2
 TH1CST=$3
 TH2CST=$4
-cd ./DATA
-rm *
-cd ../GRAPHES
-rm *
-cd ../
-rmdir ./GRAPHES
-rmdir ./DATA
-mkdir ./GRAPHES
-mkdir ./DATA
+
+# Cleanup previous data
+rm $DATA_DIR/*.dat
+rm $GRAPHES_DIR/*.png
+
 
 if [[ -e $MULTI_INIT_FILE ]]
 then
