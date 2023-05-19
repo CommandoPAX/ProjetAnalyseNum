@@ -32,7 +32,7 @@ double D_Pendulum::f_dTh1(double Th1, double Th2, double dTh1, double dTh2){
     double num = -g*(2*M1+M2)*sin(Th1)-M2*g*sin(Th1-2*Th2)-2.0*sin(Th1-Th2)*M2*(pow(dTh2,2)*L2+pow(dTh1,2)*L1*cos(Th1-Th2)); //Equation for the motion of the first mass
     double denom = L1*(2*M1+M2-M2*cos(2*Th1-2*Th2));
     if (denom != 0){
-    return (num/denom);
+        return (num/denom);
     }
     else {
         return 0;
@@ -42,8 +42,8 @@ double D_Pendulum::f_dTh1(double Th1, double Th2, double dTh1, double dTh2){
 double D_Pendulum::f_dTh2(double Th1, double Th2, double dTh1, double dTh2){
       double num        = 2.0*sin(Th1-Th2)*(pow(dTh1,2)*L1*(M1+M2) + g*(M1+M2)*cos(Th1) + pow(dTh2,2)*L2*M2*cos(Th1-Th2)); //Equation for the motion of the second mass
       double denom      = L2*(2.0*M1+M2-M2*cos(2.0*Th1-2.0*Th2));
-      if (denom != 0){
-            return (num/denom);
+      if (denom != 0 & M2 != 0){
+        return (num/denom);
       }
       else {
         return 0;
@@ -112,9 +112,9 @@ void D_Pendulum::evolution(double iter, double dt_param, int isdTh1cst, int isdT
         E  = E1 + E2;
 
         if(t!=0) {
-            output_file << t << "\t" << x1 << "\t" << y1 << "\t" << x2 << "\t" << y2 << "\t" << Th1 << "\t" << Th2 << "\t" << dTh1 << "\t" << dTh2 << "\t" << Ec << "\t" << Ep << "\t" << E << endl; //<< Ec1 << "\t" <<  Ep1 << "\t" << E1 << "\t" << Ec2 << "\t" << Ep2 << "\t" << E2 << endl;
+            output_file << t << " " << x1 << " " << y1 << " " << x2 << " " << y2 << " " << Th1 << " " << Th2 << " " << dTh1 << " " << dTh2 << " " << Ec << " " << Ep << " " << E << endl; //<< Ec1 << "\t" <<  Ep1 << "\t" << E1 << "\t" << Ec2 << "\t" << Ep2 << "\t" << E2 << endl;
         //Index for the different values
-        //t = 1, x1 = 2, y1 = 3, x2 = 4, y2 = 5, Th1 = 6, Th2 = 7, dTh1 = 8, dTh2 = 9, Ec1 = 10, Ep1 = 11, E1 = 12, Ec2 = 13, Ep2 = 14, E2 = 15
+        //t = 1, x1 = 2, y1 = 3, x2 = 4, y2 = 5, Th1 = 6, Th2 = 7, dTh1 = 8, dTh2 = 9, Ec = 10, Ep = 11, E = 12
         }
     }
 }
@@ -124,4 +124,5 @@ void D_Pendulum::affichage(){ //cette fonction execute le script gnuplot pour fa
     system("gnuplot D_PendulumXY.plt"); //show the graph for X and Y
     system("gnuplot D_PendulumPhase.plt"); //show the phase diagram
     system("gnuplot D_PendulumE.plt"); //show the energy as a function of time
+    system("gnuplot plot.plt");
 }
