@@ -2,7 +2,7 @@ set xlabel "Th"
 set ylabel "dTh"
 set auto x
 set auto y
-set datafile separator "\t"
+set datafile separator " "
 set style line 1 lt 1 linecolor rgb "blue" lw 5 pt 1
 set style line 2 lt 1 linecolor rgb "red" lw 1 pt 1
 set terminal png
